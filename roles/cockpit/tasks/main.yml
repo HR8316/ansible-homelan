@@ -1,0 +1,22 @@
+- name: Install cockpit packages
+  ansible.builtin.dnf:
+    name:
+      - cockpit
+      - cockpit-selinux
+      - cockpit-pcp
+      - cockpit-machines
+      - cockpit-podman
+    state: latest
+
+- name: Start cockpit service
+  ansible.builtin.systemd:
+    name: cockpit.socket
+    state: started
+    enabled: true
+
+- name: Manage cockpit firewall policy
+  ansible.posix.firewalld:
+    service: cockpit
+    state: enabled
+    immediate: true
+    permanent: true
