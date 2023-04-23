@@ -1,0 +1,13 @@
+- name: Set PasswordAuthentication in etc/ssh/sshd_config to {{ sshd__password_authentication }}
+  ansible.builtin.lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^#?PasswordAuthentication'
+    line: 'PasswordAuthentication {{ sshd__password_authentication }}'
+  notify: reload sshd service
+
+- name: Set PermitRootLogin in etc/ssh/sshd_config to {{ sshd__permit_root_login }}
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?PermitRootLogin'
+    line: 'PermitRootLogin {{ sshd__permit_root_login }}'
+  notify: Reload sshd service
