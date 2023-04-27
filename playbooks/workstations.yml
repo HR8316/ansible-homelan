@@ -1,0 +1,4 @@
+---
+# file: workstations.yml
+
+- hosts: workstations
