@@ -1,5 +1,5 @@
+[servers]
+homeserver.myhomelan.uk
+
 [workstations]
 carbon.myhomelan.uk
-
-[physical hosts]
-homeserver.myhomelan.uk
