@@ -1,18 +1,25 @@
-- name: Install cockpit packages
-  ansible.builtin.dnf:
-    name:
-      - cockpit
-      - cockpit-selinux
-      - cockpit-pcp
-      - cockpit-machines
-      - cockpit-podman
-    state: latest
+---
+# file: tasks/main.yml
 
-- name: Start cockpit service
-  ansible.builtin.systemd:
-    name: cockpit.socket
-    state: started
-    enabled: true
+- name: Gather package facts
+  package_facts:
+    manager: auto
+
+- name: Install cockpit
+  ansible.builtin.dnf:
+    name: cockpit
+    state: latest
+  notify: Enable cockpit service
+
+- name: Install optional packages
+  ansible.builtin.dnf:
+    name: "{{ item.name }}"
+    state: latest
+  when: "{{ item.when }}"
+  with_items:
+    - { name: cockpit-pcp, when: "'pcp' in ansible_facts.packages" }
+    - { name: cockpit-machines, when: "'libvirt' in ansible_facts.packages" }   
+    - { name: cockpit-podman, when: "'podman' in ansible_facts.packages" }
 
 - name: Manage cockpit firewall policy
   ansible.posix.firewalld:

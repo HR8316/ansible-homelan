@@ -1,0 +1,8 @@
+---
+# file: handlers/main.yml
+
+- name: Enable cockpit service
+  ansible.builtin.systemd:
+    name: cockpit.socket
+    state: started
+    enabled: true
