@@ -1,2 +1,5 @@
+---
+# file: defaults/main.yml
+
 sshd_permit_password: false
 sshd_permit_root: false

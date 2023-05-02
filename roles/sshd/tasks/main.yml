@@ -1,7 +1,7 @@
 ---
 # file: tasks/main.yml
 
-- name: Harden sshd config
+- name: Edit sshd config
   ansible.builtin.lineinfile:
     dest: /etc/ssh/sshd_config
     regexp: "{{ item.regexp }}"
