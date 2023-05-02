@@ -1,13 +1,15 @@
-- name: Set PasswordAuthentication in etc/ssh/sshd_config to {{ sshd__password_authentication }}
+---
+# file: tasks/main.yml
+
+- name: Harden sshd config
   ansible.builtin.lineinfile:
     dest: /etc/ssh/sshd_config
-    regexp: '^#?PasswordAuthentication'
-    line: 'PasswordAuthentication {{ sshd__password_authentication }}'
-  notify: reload sshd service
-
-- name: Set PermitRootLogin in etc/ssh/sshd_config to {{ sshd__permit_root_login }}
-  ansible.builtin.lineinfile:
-    path: /etc/ssh/sshd_config
-    regexp: '^#?PermitRootLogin'
-    line: 'PermitRootLogin {{ sshd__permit_root_login }}'
-  notify: Reload sshd service
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: present
+    validate: 'sshd -t -f %s'
+  with_items:
+    - regexp: '^PasswordAuthentication'
+      line: 'PasswordAuthentication {{ sshd_permit_password | ternary("yes", "no") }}'
+    - regexp: '^PermitRootLogin'
+      line: 'PermitRootLogin {{ sshd_permit_root | ternary("yes", "no") }}'

@@ -1,2 +1,2 @@
-sshd__password_authentication: 'no'
-sshd__permit_root_login: 'no'
+sshd_permit_password: false
+sshd_permit_root: false
